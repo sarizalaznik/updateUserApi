@@ -23,9 +23,9 @@ namespace crmWebApplication.BL
     public class CrmBL
     {
         public IOrganizationService service;
-        string clientId = "3e147e28-4eaf-495d-b6b0-e91ae6090e52";
+        string clientId = ConfigurationManager.AppSettings["clientId"];
         string clientSecret = ConfigurationManager.AppSettings["clientSecret"];
-        string tenantId = "8c0933d9-84ca-4048-ab76-558ba065baf2";
+        string tenantId = ConfigurationManager.AppSettings["tenantId"];
         string resource = "https://orgd47d8762.crm4.dynamics.com";
         string resourceApi = "https://orgd47d8762.api.crm4.dynamics.com";
         string authorityUrl = "https://login.microsoftonline.com";
