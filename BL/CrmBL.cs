@@ -16,6 +16,7 @@ using Microsoft.Xrm.Sdk.WebServiceClient;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.Xrm.Sdk.Client;
 using Microsoft.Crm.Sdk.Messages;
+using System.Configuration;
 
 namespace crmWebApplication.BL
 {
@@ -23,7 +24,7 @@ namespace crmWebApplication.BL
     {
         public IOrganizationService service;
         string clientId = "3e147e28-4eaf-495d-b6b0-e91ae6090e52";
-        string clientSecret = "aFy8Q~nSQLK~Vf4tWHkgZOfHXIEIK2U1nSmK3blg";
+        string clientSecret = ConfigurationManager.AppSettings["clientSecret"];
         string tenantId = "8c0933d9-84ca-4048-ab76-558ba065baf2";
         string resource = "https://orgd47d8762.crm4.dynamics.com";
         string resourceApi = "https://orgd47d8762.api.crm4.dynamics.com";
