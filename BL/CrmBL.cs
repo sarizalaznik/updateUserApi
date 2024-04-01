@@ -331,20 +331,36 @@ namespace crmWebApplication.BL
                     { "address1_city", user.city }
                 };
 
-                Entity record = service.Retrieve(entityLogicalName, Guid.Parse(fieldValue), new ColumnSet(fieldsToUpdate.Keys.ToArray()));
+                var query = new QueryExpression(entityLogicalName);
+                query.ColumnSet = new ColumnSet(fieldsToUpdate.Keys.ToArray());
+                query.Criteria.AddCondition("ID", ConditionOperator.Equal, fieldValue);
 
-                // Update each field specified in fieldsToUpdate dictionary
-                foreach (var fieldToUpdate in fieldsToUpdate)
+                EntityCollection records = service.RetrieveMultiple(query);
+
+                if (records.Entities.Count > 0)
                 {
-                    record[fieldToUpdate.Key] = fieldToUpdate.Value;
+                    Entity record = records.Entities[0];
+
+                    foreach (var fieldToUpdate in fieldsToUpdate)
+                    {
+                        record[fieldToUpdate.Key] = fieldToUpdate.Value;
+                    }
+                    service.Update(record);
+
+                    return new HttpResponseMessage()
+                    {
+                        StatusCode = HttpStatusCode.OK,
+                        Content = new StringContent(JsonConvert.SerializeObject("Update User"), System.Text.Encoding.UTF8, "application/json")
+                    };
                 }
-                service.Update(record);
-
-                return new HttpResponseMessage()
+                else
                 {
-                    StatusCode = HttpStatusCode.OK,
-                    Content = new StringContent(JsonConvert.SerializeObject("Update User"), System.Text.Encoding.UTF8, "application/json")
-                };
+                    return new HttpResponseMessage()
+                    {
+                        StatusCode = HttpStatusCode.OK,
+                        Content = new StringContent(JsonConvert.SerializeObject("User not found"), System.Text.Encoding.UTF8, "application/json")
+                    };
+                }
             }
             catch (Exception e)
             {
